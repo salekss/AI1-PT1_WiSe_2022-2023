@@ -19,7 +19,14 @@ public class CollectionsAndMaps {
      * @param li die Liste, aus der die Elemente gelöscht werden sollen.
      */
     public static void removeDupsFromRightToLeft(List<Integer> li) {
-        // TODO
+        Set <Integer> res = new HashSet<>();
+        for(int i = li.size()-1; i >= 0; i--){
+            if(!res.contains(li.get(i))) {
+                res.add(li.get(i));
+            }else{
+                li.remove(i);
+            }
+        }
     }
 
     /**
@@ -41,7 +48,17 @@ public class CollectionsAndMaps {
      */
     public static Map<Integer, Set<Integer>> merge(Map<Integer, Set<Integer>> first,
                                                    Map<Integer, Set<Integer>> second) {
-        return null; // TODO
+        Map<Integer, Set<Integer>> res = new HashMap<>(first);
+        for(Integer in : second.keySet()){
+            if(res.containsKey(in)){
+                Set<Integer> inner = new HashSet<>(res.get(in));
+                inner.addAll(second.get(in));
+                res.put(in, inner);
+            }else {
+                res.put(in, second.get(in));
+            }
+        }
+        return res;
     }
 
 
@@ -59,7 +76,19 @@ public class CollectionsAndMaps {
      * @return die Liste mit zwei Integer-Listen.
      */
     public static List<List<Integer>> inListOfLists(Map<Integer, Integer> mii) {
-        return null; // TODO
+        if(mii.isEmpty()) return new ArrayList<>();
+        List<List<Integer>> res = new ArrayList<>(2);
+        List<Integer> keys = new ArrayList<>();
+        List<Integer> values = new ArrayList<>();
+
+        for(Map.Entry<Integer, Integer> entry : mii.entrySet()){
+            keys.add(entry.getKey());
+            values.add(entry.getValue());
+        }
+        res.add(keys);
+        res.add(values);
+
+        return res;
     }
 
     /**
@@ -75,8 +104,14 @@ public class CollectionsAndMaps {
      * @return eine Map, deren Schlüssel aus der ersten Teilliste und deren Werte aus der zweiten Teilliste
      * stammen.
      */
-    public static Map<Integer, Integer> inMap(List<List<Integer>> lii) {
-        return null; // TODO
+    public static Map<Integer, Integer> inMap(List<List<Integer>> lii){
+        Map<Integer, Integer> res = new HashMap<>();
+        if(lii.isEmpty()) return res;
+        if(lii.get(0).size() != lii.get(1).size()) throw new IllegalArgumentException();
+        for(int i = 0; i < lii.get(0).size(); i++){
+            res.put(lii.get(0).get(i), lii.get(1).get(i));
+        }
+        return res;
     }
 
 
@@ -99,6 +134,24 @@ public class CollectionsAndMaps {
      * @return eine Liste von Listen, die sich alle im ersten Element unterscheiden.
      */
     public static List<List<Integer>> contract(List<List<Integer>> lli) {
-        return null; // TODO
+        Map<Integer,List<Integer>> map = new LinkedHashMap<>();
+
+        for(List<Integer> inner : lli){
+            //if(inner == null || inner.size() < 2) continue;
+            int key = inner.get(0);
+            List<Integer> innerList = map.getOrDefault(key, new ArrayList<>());
+            innerList.addAll(inner.subList(1, inner.size()));
+            map.put(key, innerList);
+        }
+
+        List<List<Integer>> res = new ArrayList<>();
+        for(Map.Entry<Integer,List<Integer>> entry : map.entrySet()){
+            List<Integer> newList = new ArrayList<>();
+            newList.add(entry.getKey());
+            newList.addAll(entry.getValue());
+            res.add(newList);
+        }
+
+        return res;
     }
 }

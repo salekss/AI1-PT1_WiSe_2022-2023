@@ -23,7 +23,20 @@ public class RecursiveCollections {
      * @return die Map mit den Längen und den Mengen der Strings gleicher Länge.
      */
     public static Map<Integer, Set<String>> collectStringsByLength(List<?> recursiveList){
-       return null; // TODO
+        Map<Integer, Set<String>> res = new HashMap<>();
+        collectStringsByLength(recursiveList, res);
+        return res;
+    }
+
+    private static void collectStringsByLength(List<?> list, Map<Integer, Set<String>> res) {
+        for (Object obj : list){
+            if(obj instanceof List<?> inner){
+                collectStringsByLength((List<?>) obj,res);
+            }else if(obj instanceof String str){
+                int key = str.length();
+                res.computeIfAbsent(key,  k -> new HashSet<>()).add(str);
+            }
+        }
     }
 
     /**
@@ -45,7 +58,19 @@ public class RecursiveCollections {
      * @return eine Liste mit 2-elementigen Listen.
      */
     public static List<List<Integer>> dividerWithDepth(List<?> objectList,int divisor){
-        return null;
+        List<List<Integer>> res = new ArrayList<>();
+        dividerWithDepth(objectList, divisor, 0, res);
+        return res;
+    }
+
+    private static void dividerWithDepth(List<?> list, int divisor, int tiefe, List<List<Integer>> res) {
+        for(Object obj : list){
+            if(obj instanceof List<?>){
+                dividerWithDepth((List<?>)obj,divisor,tiefe+1, res);
+            }else if(obj instanceof Integer integer && integer%divisor == 0){
+                res.add(Arrays.asList(tiefe,integer));
+            }
+        }
     }
 
 }
