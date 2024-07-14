@@ -83,7 +83,7 @@ public class Approximator {
         if(n<0){
             return acc;
         }else{
-            return approxRecTail(x,n-1,acc += formula(x,n));
+            return approxRecTail(x,n-1,acc + formula(x,n));
         }
     }
 
